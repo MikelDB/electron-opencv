@@ -1,0 +1,34 @@
+version: '3'
+services:
+  backend_api:
+    container_name: backend_api
+    working_dir: /home/code
+    image: mikeldb/opencv-python-cameras:latest
+    command: tail -F anything
+    networks:
+       - example
+    volumes:
+        - "./backend/:/home/code/:delegated"
+    ports:
+      - "5000:5000"
+    devices:
+       - "/dev/video0:/dev/video0"
+  electron_web:
+    container_name: electron_web
+    working_dir: /home/code
+    image: mikeldb/tfm
+    volumes:
+        - "./:/home/code/:delegated"
+        - "/tmp/.X11-unix:/tmp/.X11-unix"
+    command: npm start
+    networks:
+       - example
+    environment:
+        - DISPLAY
+    devices:
+      - "/dev/dri:/dev/dri"
+
+networks:
+   example:
+    driver: bridge
+
