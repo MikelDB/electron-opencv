@@ -3,8 +3,8 @@ services:
   backend_api:
     container_name: backend_api
     working_dir: /home/code
-    image: mikeldb/opencv-python-cameras:latest
-    command: tail -F anything
+    build: ./backend
+    command: python server.py
     networks:
        - example
     volumes:
@@ -16,9 +16,9 @@ services:
   electron_web:
     container_name: electron_web
     working_dir: /home/code
-    image: mikeldb/tfm
+    build: ./frontend
     volumes:
-        - "./:/home/code/:delegated"
+        - "./frontend/:/home/code/:delegated"
         - "/tmp/.X11-unix:/tmp/.X11-unix"
     command: npm start
     networks:
